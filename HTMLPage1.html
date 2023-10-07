@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ponto HRD</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        input {
+            width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora e Salvar</h1>
+
+    <h2>Adicionar Pessoa</h2>
+    <label for="nome">Nome: </label>
+    <input type="text" id="nome">
+    <br>
+    <label for="id">ID:</label>
+    <input type="text" id="id">
+    <br>
+    <label for="diasTrabalhados">Dias Trabalhados:</label>
+    <input type="number" id="diasTrabalhados" min="0" value="0">
+    <br>
+    <h3>Horário de Ponto</h3>
+    <label for="dataEntrada">Data de Entrada:</label>
+    <input type="date" id="dataEntrada">
+    <br>
+    <label for="horaInicio">Hora de Início (HH:MM):</label>
+    <input type="text" id="horaInicio" placeholder="00:00" value="00:00">
+    <br>
+    <label for="dataSaida">Data de Saída:</label>
+    <input type="date" id="dataSaida">
+    <br>
+    <label for="horaFechamento">Hora de Fechamento (HH:MM):</label>
+    <input type="text" id="horaFechamento" placeholder="00:00" value="00:00">
+    <br>
+    <button onclick="calcularTempoPonto()">Calcular Horário de Ponto</button>
+
+    <h3>Soma de Tempo Feito</h3>
+    <div id="temposFeitos">
+        <div>
+            <label for="tempoFeito" class="tempoFeitoLabel">Tempo Feito (HH:MM):</label>
+            <input type="text" class="tempoFeito" placeholder="00:00" value="00:00">
+        </div>
+    </div>
+    <br>
+    <button onclick="adicionarTempoFeito()">Adicionar Tempo Feito</button>
+    <button onclick="calcularTempoFeito()">Calcular Tempo Feito</button>
+
+    <br>
+    <button onclick="salvarDados()">Salvar</button>
+
+    <h2>Resultado</h2>
+    <div id="resultadoPonto">
+        <p>Resultado do Horário de Ponto: <span id="resultadoHoraPonto"></span></p>
+        <p>Data e Hora: <span id="dataHoraPonto"></span></p>
+    </div>
+    <div id="resultado">
+        <p>Nome: <span id="nomeResultado"></span></p>
+        <p>ID: <span id="idResultado"></span></p>
+        <p>Soma de Tempo Feito: <span id="tempoFeitoResultado"></span></p>
+        <p>Dia Digitado: <span id="diasTrabalhadosResultado"></span></p>
+        <p>Meta Semanal Atingida: <span id="metaSemanal"></span></p>
+        <p>Meta de 3 Dias na Semana Atingida: <span id="metaSemanalDias"></span></p>
+    </div>
+
+    <script>
+        let tempoFeitoSemanalEmMinutos = 0;
+        let metaSemanalAtingida = false;
+        let metaSemanalDiasAtingida = false;
+
+        function calcularTempoPonto() {
+            const nome = document.getElementById("nome").value;
+            const id = document.getElementById("id").value;
+
+            const dataEntrada = document.getElementById("dataEntrada").value;
+            const horaInicio = document.getElementById("horaInicio").value;
+
+            const dataSaida = document.getElementById("dataSaida").value;
+            const horaFechamento = document.getElementById("horaFechamento").value;
+
+            const inicio = new Date(`${dataEntrada}T${horaInicio}`);
+            const fechamento = new Date(`${dataSaida}T${horaFechamento}`);
+
+            const diferencaEmMinutos = (fechamento - inicio) / (1000 * 60);
+            const horas = Math.floor(diferencaEmMinutos / 60);
+            const minutos = diferencaEmMinutos % 60;
+
+            const dataHora = new Date();
+
+            document.getElementById("resultadoHoraPonto").textContent = `${horas} horas e ${minutos} minutos`;
+            document.getElementById("dataHoraPonto").textContent = dataHora.toLocaleString();
+            document.getElementById("nomeResultado").textContent = nome;
+            document.getElementById("idResultado").textContent = id;
+
+            atualizarMetaSemanal();
+        }
+
+        function adicionarTempoFeito() {
+            const temposFeitosDiv = document.getElementById("temposFeitos");
+            const novoTempoFeitoDiv = document.createElement("div");
+
+            novoTempoFeitoDiv.innerHTML = `
+                        <label for="tempoFeito" class="tempoFeitoLabel">Tempo Feito (HH:MM):</label>
+                        <input type="text" class="tempoFeito" placeholder="00:00" value="00:00">
+                    `;
+
+            temposFeitosDiv.appendChild(novoTempoFeitoDiv);
+        }
+
+        function calcularTempoFeito() {
+            const tempoFeitosInputs = document.querySelectorAll(".tempoFeito");
+            let tempoTotalEmMinutos = 0;
+
+            for (const input of tempoFeitosInputs) {
+                const tempoFeito = input.value;
+                const [horas, minutos] = tempoFeito.split(":").map(Number);
+                tempoTotalEmMinutos += horas * 60 + minutos;
+            }
+
+            const horasTotal = Math.floor(tempoTotalEmMinutos / 60);
+            const minutosTotal = tempoTotalEmMinutos % 60;
+
+            tempoFeitoSemanalEmMinutos += tempoTotalEmMinutos;
+
+            document.getElementById("tempoFeitoResultado").textContent = `${horasTotal} horas e ${minutosTotal} minutos`;
+
+            atualizarMetaSemanal();
+        }
+
+        function atualizarMetaSemanal() {
+            // Verificar se a meta semanal foi atingida (7 horas)
+            metaSemanalAtingida = tempoFeitoSemanalEmMinutos >= 7 * 60;
+            document.getElementById("metaSemanal").textContent = metaSemanalAtingida ? "Sim" : "Não";
+
+            // Verificar se a meta de 3 dias na semana foi atingida
+            const diasTrabalhadosDigitados = document.getElementById("diasTrabalhados").value;
+            metaSemanalDiasAtingida = diasTrabalhadosDigitados >= 3;
+            document.getElementById("metaSemanalDias").textContent = metaSemanalDiasAtingida ? "Sim" : "Não";
+        }
+
+        function salvarDados() {
+            const nome = document.getElementById("nome").value;
+            const id = document.getElementById("id").value;
+            const diasTrabalhadosDigitados = document.getElementById("diasTrabalhados").value;
+
+            const tempoFeitosInputs = document.querySelectorAll(".tempoFeito");
+            let tempoTotalEmMinutos = 0;
+
+            for (const input of tempoFeitosInputs) {
+                const tempoFeito = input.value;
+                const [horas, minutos] = tempoFeito.split(":").map(Number);
+                tempoTotalEmMinutos += horas * 60 + minutos;
+            }
+
+            const horasTotal = Math.floor(tempoTotalEmMinutos / 60);
+            const minutosTotal = tempoTotalEmMinutos % 60;
+
+            const dataHora = new Date();
+
+            document.getElementById("nomeResultado").textContent = nome;
+            document.getElementById("idResultado").textContent = id;
+            document.getElementById("tempoFeitoResultado").textContent = `${horasTotal} horas e ${minutosTotal} minutos`;
+            document.getElementById("diasTrabalhadosResultado").textContent = `Dia Digitado: ${diasTrabalhadosDigitados}`;
+
+            // Verificar se a meta de 3 dias na semana foi atingida
+            metaSemanalDiasAtingida = diasTrabalhadosDigitados >= 3;
+            document.getElementById("metaSemanalDias").textContent = metaSemanalDiasAtingida ? "Sim" : "Não";
+
+            const arquivoNome = `${nome}_${id}_dados.txt`;
+
+            const dados = `Nome: ${nome}, ID: ${id}, Soma de Tempo Feito: ${horasTotal} horas e ${minutosTotal} minutos\n`;
+            const dadosComDataHora = `${dados}Data e Hora: ${dataHora.toLocaleString()}\n`;
+            const metaSemanalTexto = `Meta Semanal Atingida: ${metaSemanalAtingida ? "Sim" : "Não"}\n`;
+            const diasTrabalhadosTexto = `Dia Digitado: ${diasTrabalhadosDigitados}\n`;
+            const metaSemanalDiasTexto = `Meta de 3 Dias na Semana Atingida: ${metaSemanalDiasAtingida ? "Sim" : "Não"}\n`;
+
+            const blob = new Blob([dadosComDataHora, metaSemanalTexto, diasTrabalhadosTexto, metaSemanalDiasTexto], { type: "text/plain" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = arquivoNome;
+            a.click();
+        }
+    </script>
+    <center>
+        <img src="https://cdn.discordapp.com/attachments/1121604849159647273/1159490770890403870/hrd-removebg-preview.png?ex=653136ee&is=651ec1ee&hm=e7c110624646f6ef6d9a2825a776b9b84d176745357000158907c7b30814a339&" alt="">
+    </center>
+</body>
+</html>
+
+
+
+
+
