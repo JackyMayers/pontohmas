@@ -66,7 +66,7 @@
         <p>ID: <span id="idResultado"></span></p>
         <p>Soma de Tempo Feito: <span id="tempoFeitoResultado"></span></p>
         <p>Dia Digitado: <span id="diasTrabalhadosResultado"></span></p>
-        <p>Meta Semanal Atingida: <span id="metaSemanal"></span></p>
+        <p>Meta de horas Semanal Atingida: <span id="metaSemanal"></span></p>
         <p>Meta de 3 Dias na Semana Atingida: <span id="metaSemanalDias"></span></p>
     </div>
 
@@ -177,7 +177,7 @@
 
             const dados = `Nome: ${nome}, ID: ${id}, Soma de Tempo Feito: ${horasTotal} horas e ${minutosTotal} minutos\n`;
             const dadosComDataHora = `${dados}Data e Hora: ${dataHora.toLocaleString()}\n`;
-            const metaSemanalTexto = `Meta Semanal Atingida: ${metaSemanalAtingida ? "Sim" : "Não"}\n`;
+            const metaSemanalTexto = `Meta de horas Semanal Atingida: ${metaSemanalAtingida ? "Sim" : "Não"}\n`;
             const diasTrabalhadosTexto = `Dia Digitado: ${diasTrabalhadosDigitados}\n`;
             const metaSemanalDiasTexto = `Meta de 3 Dias na Semana Atingida: ${metaSemanalDiasAtingida ? "Sim" : "Não"}\n`;
 
