@@ -71,7 +71,7 @@
 
     <h2>Resultado</h2>
     <div id="resultadoPonto">
-        <p>Resultado do Horário de Ponto: <span id="resultadoHoraPonto"></span></p>
+        <p><b>Resultado do Horário de Ponto: </b><span id="resultadoHoraPonto"></span></p>
         <p>Data e Hora: <span id="dataHoraPonto"></span></p>
     </div>
     <div id="resultado">
@@ -216,7 +216,7 @@
 
             const dados = `Nome: ${nome}, ID: ${id}, Soma de Tempo Feito: ${horasTotal} horas e ${minutosTotal} minutos\n`;
             const dadosComDataHora = `${dados}Data e Hora: ${dataHora.toLocaleString()}\n`;
-            const metaSemanalTexto = `Meta Semanal Atingida: ${metaSemanalAtingida ? "Sim" : "Não"}\n`;
+            const metaSemanalTexto = `Meta 7 horas Semanal Atingida: ${metaSemanalAtingida ? "Sim" : "Não"}\n`;
             const diasTrabalhadosTexto = `Dia Digitado: ${diasTrabalhadosDigitados}\n`;
             const metaSemanalDiasTexto = `Meta de 3 Dias na Semana Atingida: ${metaSemanalDiasAtingida ? "Sim" : "Não"}\n`;
             const justificouAusenciaTexto = `Justificou Ausência: ${justificouAusencia}\n`;
