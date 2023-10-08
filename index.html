@@ -1,6 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+        body {
+            text-align: center;
+            background-color: white;
+            color: black;
+        }
+
+        input {
+            width: 150px;
+        }
+
+        .dark-mode {
+            background-color: black;
+            color: white;
+        }
+
+        .dark-mode-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+</head>
+<body id="body">
+    <h1>Calculadora e Salvar</h1>
+
+    <!-- Botão para alternar entre o modo claro e escuro -->
+    <button id="darkModeButton" class="dark-mode-toggle" onclick="toggleDarkMode()">Modo Escuro</button>
+
+    <h2>Adicionar Pessoa</h2>
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome">
+    <br>
+    <!-- Restante do seu código HTML para adicionar pessoas e calcular o tempo aqui -->
+
+    <script>
+        let tempoFeitoSemanalEmMinutos = 0;
+        let metaSemanalAtingida = false;
+        let metaSemanalDiasAtingida = false;
+
+        function toggleDarkMode() {
+            const body = document.getElementById("body");
+            const button = document.getElementById("darkModeButton");
+
+            if (body.classList.contains("dark-mode")) {
+                body.classList.remove("dark-mode");
+                button.textContent = "Modo Escuro";
+            } else {
+                body.classList.add("dark-mode");
+                button.textContent = "Modo Claro";
+            }
+        }
+
+            // Restante do seu código JavaScript para calcular o tempo aqui
+    </script>
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
