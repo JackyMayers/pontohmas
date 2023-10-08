@@ -13,19 +13,19 @@
             width: 150px;
         }
 
-        /* Estilos para o modo claro (padrão) */
+        
         body.light-mode {
             background-color: white;
             color: black;
         }
 
-        /* Estilos para o modo escuro */
+        
         body.dark-mode {
             background-color: black;
             color: white;
         }
 
-            /* Estilos específicos para os elementos no modo escuro */
+            
             body.dark-mode label, body.dark-mode select {
                 color: white;
             }
@@ -42,8 +42,7 @@
     </style>
 </head>
 <body class="light-mode">
-    <!-- Restante do seu código HTML aqui -->
-    <!-- Botão para alternar entre o modo claro e escuro -->
+   
     <button id="darkModeButton" class="dark-mode-toggle" onclick="toggleDarkMode()">Modo Escuro</button>
 
     <h1>Ponto HRD</h1>
@@ -204,7 +203,7 @@
 
             document.getElementById("tempoFeitoResultado").textContent = `${horasTotal} horas e ${minutosTotal} minutos`;
 
-            // Verificar se a meta semanal foi atingida (7 horas)
+           
             metaSemanalAtingida = tempoFeitoSemanalEmMinutos >= 7 * 60;
             document.getElementById("metaSemanal").textContent = metaSemanalAtingida ? "Sim" : "Não";
         }
@@ -256,7 +255,7 @@
             a.click();
         }
 
-        // Função para alternar entre o modo claro e escuro
+        
         function toggleDarkMode() {
             const body = document.body;
             if (body.classList.contains("dark-mode")) {
