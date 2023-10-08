@@ -75,13 +75,13 @@
         <p>Data e Hora: <span id="dataHoraPonto"></span></p>
     </div>
     <div id="resultado">
-        <p>Nome: <span id="nomeResultado"></span></p>
-        <p>ID: <span id="idResultado"></span></p>
-        <p>Soma de Tempo Feito: <span id="tempoFeitoResultado"></span></p>
-        <p>Dia Digitado: <span id="diasTrabalhadosResultado"></span></p>
-        <p>Meta Semanal Atingida: <span id="metaSemanal"></span></p>
-        <p>Meta de 3 Dias na Semana Atingida: <span id="metaSemanalDias"></span></p>
-        <p>Justificou Ausência: <span id="justificouAusenciaResultado"></span></p>
+        <p><b>Nome:</b> <span id="nomeResultado"></span></p>
+        <p><b>ID:</b> <span id="idResultado"></span></p>
+        <p><b>Soma de Tempo Feito:</b> <span id="tempoFeitoResultado"></span></p>
+        <p><b>Dia Digitado: </b><span id="diasTrabalhadosResultado"></span></p>
+        <p><b>Meta 7 horas Semanal Atingida:</b> <span id="metaSemanal"></span></p>
+        <p><b>Meta de 3 Dias na Semana Atingida:</b> <span id="metaSemanalDias"></span></p>
+        <p><b>Justificou Ausência: </b><span id="justificouAusenciaResultado"></span></p>
     </div>
 
     <script>
@@ -216,7 +216,7 @@
 
             const dados = `Nome: ${nome}, ID: ${id}, Soma de Tempo Feito: ${horasTotal} horas e ${minutosTotal} minutos\n`;
             const dadosComDataHora = `${dados}Data e Hora: ${dataHora.toLocaleString()}\n`;
-            const metaSemanalTexto = `Meta 7 horas Semanal Atingida: ${metaSemanalAtingida ? "Sim" : "Não"}\n`;
+            const metaSemanalTexto = `Meta Semanal Atingida: ${metaSemanalAtingida ? "Sim" : "Não"}\n`;
             const diasTrabalhadosTexto = `Dia Digitado: ${diasTrabalhadosDigitados}\n`;
             const metaSemanalDiasTexto = `Meta de 3 Dias na Semana Atingida: ${metaSemanalDiasAtingida ? "Sim" : "Não"}\n`;
             const justificouAusenciaTexto = `Justificou Ausência: ${justificouAusencia}\n`;
