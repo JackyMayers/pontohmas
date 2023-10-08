@@ -13,19 +13,16 @@
             width: 150px;
         }
 
-        
         body.light-mode {
             background-color: white;
             color: black;
         }
 
-        
         body.dark-mode {
             background-color: black;
             color: white;
         }
 
-            
             body.dark-mode label, body.dark-mode select {
                 color: white;
             }
@@ -42,11 +39,11 @@
     </style>
 </head>
 <body class="light-mode">
-   
+
     <button id="darkModeButton" class="dark-mode-toggle" onclick="toggleDarkMode()">Modo Escuro</button>
     <b>
-    <a href="https://tairritadotio.github.io/index.html">Inicio</a>
-    <a href="https://tairritadotio.github.io/hrd/">Farmacia</a>
+        <a href="https://tairritadotio.github.io/index.html">Inicio</a>
+        <a href="https://tairritadotio.github.io/hrd/">Farmacia</a>
     </b>
     <h1>Ponto HRD</h1>
 
@@ -110,8 +107,9 @@
         <p><b>Soma de Tempo Feito:</b> <span id="tempoFeitoResultado"></span></p>
         <p><b>Dia Digitado: </b><span id="diasTrabalhadosResultado"></span></p>
         <p><b>Meta 7 horas Semanal Atingida:</b> <span id="metaSemanal"></span></p>
-        <p><b>Meta de 3 Dias na Semana Atingida:</b> <span id="metaSemanalDias"></span></p>
         <p><b>Justificou Ausência: </b><span id="justificouAusenciaResultado"></span></p>
+        <p><b>Tempo Restante para Meta Semanal (7 horas):</b> <span id="tempoRestanteMetaDiaria"></span></p>
+        <p><b>Meta de 3 Dias na Semana Atingida:</b> <span id="metaSemanalDias"></span></p>
     </div>
 
     <script>
@@ -187,8 +185,6 @@
 
         function atualizarMetaSemanal() {
             const diasTrabalhadosDigitados = document.getElementById("diasTrabalhados").value;
-            metaSemanalDiasAtingida = diasTrabalhadosDigitados >= 3;
-            document.getElementById("metaSemanalDias").textContent = metaSemanalDiasAtingida ? "Sim" : "Não";
 
             const tempoFeitosInputs = document.querySelectorAll(".tempoFeito");
             let tempoTotalEmMinutos = 0;
@@ -206,9 +202,19 @@
 
             document.getElementById("tempoFeitoResultado").textContent = `${horasTotal} horas e ${minutosTotal} minutos`;
 
-           
             metaSemanalAtingida = tempoFeitoSemanalEmMinutos >= 7 * 60;
             document.getElementById("metaSemanal").textContent = metaSemanalAtingida ? "Sim" : "Não";
+
+            
+            const tempoRestanteMinutos = Math.max(0, 7 * 60 - tempoTotalEmMinutos);
+            const tempoRestanteHoras = Math.floor(tempoRestanteMinutos / 60);
+            const tempoRestanteMinutosRestantes = tempoRestanteMinutos % 60;
+
+            document.getElementById("tempoRestanteMetaDiaria").textContent = `${tempoRestanteHoras} horas e ${tempoRestanteMinutosRestantes} minutos`;
+
+            
+            metaSemanalDiasAtingida = diasTrabalhadosDigitados >= 3;
+            document.getElementById("metaSemanalDias").textContent = metaSemanalDiasAtingida ? "Sim" : "Não";
         }
 
         function salvarDados() {
@@ -236,29 +242,33 @@
             document.getElementById("tempoFeitoResultado").textContent = `${horasTotal} horas e ${minutosTotal} minutos`;
             document.getElementById("diasTrabalhadosResultado").textContent = `Dia Digitado: ${diasTrabalhadosDigitados}`;
 
-            // Verificar se a meta de 3 dias na semana foi atingida
-            metaSemanalDiasAtingida = diasTrabalhadosDigitados >= 3;
-            document.getElementById("metaSemanalDias").textContent = metaSemanalDiasAtingida ? "Sim" : "Não";
-
-            document.getElementById("justificouAusenciaResultado").textContent = justificouAusencia;
+            
+            const tempoRestanteMinutos = Math.max(0, 7 * 60 - tempoTotalEmMinutos);
+            const tempoRestanteHoras = Math.floor(tempoRestanteMinutos / 60);
+            const tempoRestanteMinutosRestantes = tempoRestanteMinutos % 60;
 
             const arquivoNome = `${nome}_${id}_dados.txt`;
 
-            const dados = `Nome: ${nome}, ID: ${id}, Soma de Tempo Feito: ${horasTotal} horas e ${minutosTotal} minutos\n`;
-            const dadosComDataHora = `${dados}Data e Hora: ${dataHora.toLocaleString()}\n`;
-            const metaSemanalTexto = `Meta Semanal Atingida: ${metaSemanalAtingida ? "Sim" : "Não"}\n`;
-            const diasTrabalhadosTexto = `Dia Digitado: ${diasTrabalhadosDigitados}\n`;
-            const metaSemanalDiasTexto = `Meta de 3 Dias na Semana Atingida: ${metaSemanalDiasAtingida ? "Sim" : "Não"}\n`;
-            const justificouAusenciaTexto = `Justificou Ausência: ${justificouAusencia}\n`;
+            const fileContent = `
+                Nome: ${nome}
+                ID: ${id}
+                Soma de Tempo Feito: ${horasTotal} horas e ${minutosTotal} minutos
+                Data e Hora: ${dataHora.toLocaleString()}
+                Meta Semanal Atingida: ${metaSemanalAtingida ? "Sim" : "Não"}
+                Dia Digitado: ${diasTrabalhadosDigitados}
+                Justificou Ausência: ${justificouAusencia}
+                Tempo Restante para Meta Semanal (7 horas): ${tempoRestanteHoras} horas e ${tempoRestanteMinutosRestantes} minutos
+                Meta de 3 Dias na Semana Atingida: ${metaSemanalDiasAtingida ? "Sim" : "Não"}
+            `;
 
-            const blob = new Blob([dadosComDataHora, metaSemanalTexto, diasTrabalhadosTexto, metaSemanalDiasTexto, justificouAusenciaTexto], { type: "text/plain" });
+            const blob = new Blob([fileContent], { type: "text/plain" });
+            const url = window.URL.createObjectURL(blob);
             const a = document.createElement("a");
-            a.href = URL.createObjectURL(blob);
+            a.href = url;
             a.download = arquivoNome;
             a.click();
         }
 
-        
         function toggleDarkMode() {
             const body = document.body;
             if (body.classList.contains("dark-mode")) {
@@ -275,6 +285,7 @@
     </center>
 </body>
 </html>
+
 
 
 
